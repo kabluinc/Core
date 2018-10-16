@@ -59,6 +59,8 @@ class Main extends PluginBase implements Listener{
     public $npcDelete = [];
     public $test_version = "";
 
+    private $sql;
+
     public function onLoad(){
         self::$obj = $this;
         date_default_timezone_set('EST');
@@ -68,7 +70,7 @@ class Main extends PluginBase implements Listener{
     }
 
     public function onEnable(){
-        $this->settings = new Config($this->getDataFolder()."settings.yml", Config::YAML, ["server-name" => "server-name", "username" => "username", "db_name" => "database-name","password" => "password", "port" => 3306]);
+        $this->settings = new Config($this->getDataFolder()."settings.yml", Config::YAML, ["use_sql" => "false","server-name" => "server-name", "username" => "username", "db_name" => "database-name","password" => "password", "port" => 3306]);
         $this->database = new Config($this->getDataFolder()."database.yml", Config::YAML, []);
         $this->matchesConfig = new Config($this->getDataFolder()."matches.yml", Config::YAML, ["Kohi1v1-matches" => [],"IronSoup1v1-matches" => [], "BUHC1v1-matches" => [], "Gapple1v1-matches" => []]);
         $this->privateMessages = new Config($this->getDataFolder()."private-messages.txt", Config::ENUM, []);
@@ -80,8 +82,11 @@ class Main extends PluginBase implements Listener{
         $this->registerTasks();
         $this->test_version = Utils::generateRandomString(20);
         $this->getLogger()->info(Prefix::DEFAULT."Enabled! Test version: ".$this->test_version);
-        $sql = new YAMLToSQL($this);
-        $sql->process();
+        $this->sql = $this->settings->get("use_sql");
+        if($this->sql){
+            $sql = new YAMLToSQL($this);
+            $sql->process();
+        }
         $this->utils = new Utils($this);
     }
 
