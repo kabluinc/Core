@@ -59,7 +59,7 @@ class Main extends PluginBase implements Listener{
     public $npcDelete = [];
     public $test_version = "";
 
-    private $sql;
+    public $sql;
 
     public function onLoad(){
         self::$obj = $this;
