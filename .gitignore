@@ -2,3 +2,5 @@
 *.xml
 database.yml
 settings.yml
+matches.yml
+matches.yml
