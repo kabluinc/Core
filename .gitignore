@@ -1,2 +1,4 @@
 
 *.xml
+database.yml
+settings.yml
