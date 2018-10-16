@@ -41,12 +41,16 @@ class YAMLToSQL{
         $total = count($database);
         $keys = array_keys($database);
         $i = 0;
+        $db_name = $this->plugin->settings->get("server-name");
         while($i < $total){
             $name = $database[$keys[$i]]["name"];
             $password = $database[$keys[$i]]["password"];
+            $rank = $database[$keys[$i]]["rank"];
+            $lang = $database[$keys[$i]]["lang"];
+            $uuid = $database[$keys[$i]]["uuid"];
             if($database[$keys[$i]]["uploaded_to_sql"] !== true){
-                $this->result = $this->db->query("INSERT INTO sql9260847.registered_players(name, password)
-										VALUES ('$name', '$password')"
+                $this->result = $this->db->query("INSERT INTO registered_players(name, password, rank, lang, uuid)
+										VALUES ('$name', '$password', '$rank', '$lang', '$uuid')"
                 );
                 if($this->result === false){
                     $this->getPlugin()->getLogger()->info(Prefix::DEFAULT_BAD."Files weren't uploaded to SQL server!");
@@ -62,7 +66,7 @@ class YAMLToSQL{
             $i++;
         }
         if($this->result){
-            $this->getPlugin()->getLogger()->info(Prefix::DEFAULT.(string) $this->users . " user files uploaded to SQL database.");
+            $this->getPlugin()->getLogger()->info(Prefix::DEFAULT.(string) $this->users . " player files uploaded to SQL database.");
         }
     }
 }
