@@ -1,0 +1,6 @@
+name: Core
+main: Core\Main
+description: Core
+author: Savion
+api: "4.0.0"
+version: "BETA"
