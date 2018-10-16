@@ -41,7 +41,6 @@ class YAMLToSQL{
         $total = count($database);
         $keys = array_keys($database);
         $i = 0;
-        $db_name = $this->plugin->settings->get("server-name");
         while($i < $total){
             $name = $database[$keys[$i]]["name"];
             $password = $database[$keys[$i]]["password"];
