@@ -160,10 +160,12 @@ class Main extends PluginBase implements Listener{
         $this->getScheduler()->cancelAllTasks();
     }
 
+
     /**
      * @param array $pos1
      * @param array $pos2
      * @param string $type
+     * @return int
      */
     public function newMatch(array $pos1, array $pos2, string $type){
         $cfg = $this->matchesConfig->getAll();
@@ -176,6 +178,7 @@ class Main extends PluginBase implements Listener{
             $this->matchesConfig->setAll($cfg);
             $this->matchesConfig->save();
             $this->kohiMatches[$int] = new KohiManager($this, $int);
+            return $int;
         }
         if($type === "IronSoup1v1"){
             $int = count($cfg["IronSoup1v1-matches"])+1;
@@ -186,6 +189,7 @@ class Main extends PluginBase implements Listener{
             $this->matchesConfig->setAll($cfg);
             $this->matchesConfig->save();
             $this->ironSoupMatches[$int] = new IronSoupManager($this, $int);
+            return $int;
         }
         if($type === "BUHC1v1"){
             $int = count($cfg["BUHC1v1-matches"])+1;
@@ -196,6 +200,7 @@ class Main extends PluginBase implements Listener{
             $this->matchesConfig->setAll($cfg);
             $this->matchesConfig->save();
             $this-> buhcMatches[$int] = new BUHCManager($this, $int);
+            return $int;
         }
     }
 

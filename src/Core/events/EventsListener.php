@@ -143,8 +143,8 @@ class EventsListener implements Listener{
                         "y" => $block->y,
                         "z" => $block->z,
                         "level" => $player->getLevel()->getName()];
-                    $player->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."Done! All positions set!");
-                    $this->getPlugin()->newMatch($this->pos1, $this->pos2, $this->getPlugin()->isSetting[$username]["type"]);
+                    $match_number = $this->getPlugin()->newMatch($this->pos1, $this->pos2, $this->getPlugin()->isSetting[$username]["type"]);
+                    $player->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."Done! All positions set for match #".$match_number." for ".$this->getPlugin()->isSetting[$username]["type"]."!");
                     unset($this->getPlugin()->isSetting[$username]);
                     break;
             }
