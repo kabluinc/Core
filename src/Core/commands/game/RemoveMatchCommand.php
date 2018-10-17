@@ -69,7 +69,7 @@ class RemoveMatchCommand extends CoreCommand{
                     $sender->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT_BAD)."Please provide a correct match number!");
                 }
             }else{
-                $sender->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT_BAD)."That isn't a match type!"));
+                $sender->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT_BAD)."That isn't a match type!");
             }
         }else{
             $sender->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT_BAD)."You do not have permission to run this command or please join the server to run this command!");
