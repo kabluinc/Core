@@ -154,7 +154,7 @@ class EventsListener implements Listener{
                 if($player->getHealth() === $player->getMaxHealth()){
                     return;
                 }else{
-                    $player->getInventory()->remove(Item::get(Item::MUSHROOM_STEW,0,1));
+                    $player->getInventory()->removeItem(Item::get(Item::MUSHROOM_STEW,0,1));
                     $player->setHealth(($player->getHealth() + 1.5));
                 }
             }

@@ -12,6 +12,8 @@ use Core\Main;
 use Core\player\PlayerClass;
 use Core\utils\Prefix;
 use Core\utils\Utils;
+use pocketmine\item\Item;
+use pocketmine\item\ItemIds;
 
 class IronSoupManager extends GameManager {
 
@@ -173,7 +175,15 @@ class IronSoupManager extends GameManager {
         $this->time = 1500;
         foreach ($this->getPlayers() as $name) {
             $player = $this->getServer()->getPlayer($name);
-            //give armor and etc!
+            $player->getArmorInventory()->setHelmet(Item::get(Item::IRON_HELMET));
+            $player->getArmorInventory()->setChestplate(Item::get(Item::IRON_CHESTPLATE));
+            $player->getArmorInventory()->setLeggings(Item::get(Item::IRON_LEGGINGS));
+            $player->getArmorInventory()->setBoots(Item::get(Item::IRON_BOOTS));
+
+            $player->getInventory()->addItem(Item::get(ItemIds::IRON_SWORD, 0, 1));
+            $player->getInventory()->sendContents($player);
+            $player->getInventory()->addItem(Item::get(ItemIds::MUSHROOM_STEW, 0, 32));
+            $player->getInventory()->sendContents($player);
             $player->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."Match has started!");
         }
     }
