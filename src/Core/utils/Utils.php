@@ -23,15 +23,10 @@ class Utils{
 
     public function __construct(Main $plugin){
         $this->plugin = $plugin;
-        if($this->plugin->sql) $this->db = new \mysqli(!is_null($this->plugin->settings->get("server-name")) ? $this->plugin->settings->get("server-name") : "localhost", $this->plugin->settings->get("username"), $this->plugin->settings->get("password"), $this->plugin->settings->get("db_name"), !is_null($this->plugin->settings->get("port")) ? ((int)$this->plugin->settings->get("port")) : 3306);
     }
 
     public function getPlugin(){
         return $this->plugin;
-    }
-
-    public function getDB(){
-        return $this->db;
     }
 
     /**
@@ -45,13 +40,6 @@ class Utils{
             Main::getInstance()->getLogger()->critical("Map backup for match ".$match->getName()." for ".$match->getGameType()." is missing!");
             return;
         }
-        /*Server::getInstance()->unloadLevel(Server::getInstance()->getLevelByName($levelName));
-        $tmpMap = Server::getInstance()->getDataPath() . "worlds/$levelName/";
-        $baseMap = (Main::getInstance()->getDataFolder()."/World_Backups/$levelName/");
-        foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($baseMap)) as $file){
-            $rel = substr(realpath($file), strlen(realpath($baseMap)));
-            copy($file, $tmpMap . $rel);
-        }*/
         self::resetLevel($levelName);
     }
 
@@ -95,9 +83,7 @@ class Utils{
         $main = Main::getInstance();
         $worldPath = $server->getDataPath() . "worlds/".$levelName;
         self::file_delDir($worldPath);
-        $main->getLogger()->info("DELETED WORLD REGION!");
         self::recurse_copy($main->getDataFolder()."World_Backups/".$levelName."/",$server->getDataPath()."worlds/".$levelName."/");
-        $main->getLogger()->info("RESTORED WORLD!");
     }
 
     /**
@@ -150,9 +136,4 @@ class Utils{
         $inventory->setItem(4, ItemFactory::get(Item::DIAMOND_SWORD)->setCustomName(TF::AQUA.TF::BOLD."SOON....."), true);
         $inventory->sendContents($player);
     }
-
-    public function getPasswordFromSql($playerName){
-        //TODO: sql management.
-    }
-
 }

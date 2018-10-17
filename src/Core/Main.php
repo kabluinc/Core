@@ -19,11 +19,11 @@ use Core\tasks\FloatingTextTask;
 use Core\tasks\ParticlesTask;
 use Core\tasks\QueueTask;
 use Core\tasks\ServerRestartTask;
-use Core\tasks\YAMLToSQLTask;
+use Core\tasks\MySQLProviderTask;
 use Core\utils\Permissions;
 use Core\utils\Prefix;
 use Core\utils\Utils;
-use Core\utils\YAMLToSQL;
+use Core\utils\MySQLProvider;
 use pocketmine\entity\Entity;
 use pocketmine\event\Listener;
 use pocketmine\math\Vector3;
@@ -84,7 +84,7 @@ class Main extends PluginBase implements Listener{
         $this->getLogger()->info(Prefix::DEFAULT."Enabled! Test version: ".$this->test_version);
         $this->sql = $this->settings->get("use_sql");
         if($this->sql){
-            $sql = new YAMLToSQL($this);
+            $sql = new MySQLProvider($this);
             $sql->process();
         }
         $this->utils = new Utils($this);
@@ -149,7 +149,7 @@ class Main extends PluginBase implements Listener{
         $this->getScheduler()->scheduleRepeatingTask(new ParticlesTask($this, new Vector3($x, $y+4.5, $z)), 20*4.5);
         $this->getScheduler()->scheduleRepeatingTask(new ServerRestartTask($this), 20*1);
         //$this->getScheduler()->scheduleRepeatingTask(new QueueTask($this), 20*1);
-        //$this->getScheduler()->scheduleRepeatingTask(new YAMLToSQLTask($this), 20*1);
+        //$this->getScheduler()->scheduleRepeatingTask(new MySQLProviderTask($this), 20*1);
     }
 
 

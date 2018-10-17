@@ -13,7 +13,7 @@ namespace Core\utils;
 use Core\Main;
 use pocketmine\utils\Config;
 
-class YAMLToSQL{
+class MySQLProvider{
 
     //TODO: implement MySQL data saving for all data uses.
 
@@ -68,4 +68,9 @@ class YAMLToSQL{
             $this->getPlugin()->getLogger()->info(Prefix::DEFAULT.(string) $this->users . " player files uploaded to SQL database.");
         }
     }
+
+    public function getPasswordFromSql($playerName){
+        //TODO: sql management.
+    }
+
 }
