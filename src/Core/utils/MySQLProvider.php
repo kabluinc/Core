@@ -71,7 +71,7 @@ class MySQLProvider{
     }
 
     /**
-     * @param PlayerClass $player
+     * @param $name
      * @param string $data
      * $data is one of the MySQL database columns [name, password, rank, lang, uuid]
      * @return mixed
