@@ -37,7 +37,7 @@ class QuitCommand extends CoreCommand{
     public function execute(CommandSender $sender, string $commandLabel, array $args){
         if($sender instanceof PlayerClass){
             if($sender->isQueued()){
-                $sender->sendMessage(Prefix::DEFAULT."You have left the game/stopped queueing!");
+                $sender->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."You have left the game/stopped queueing!");
                 if($sender->getMatch() !== null){
                     $sender->removeFromMatch();
                 }
@@ -51,7 +51,7 @@ class QuitCommand extends CoreCommand{
                 $sender->setHealth(20);
                 Utils::sendLobbyItems($sender);
             }else{
-                $sender->sendMessage(Prefix::DEFAULT."You aren't in a match nor are you queueing.");
+                $sender->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."You aren't in a match nor are you queueing.");
             }
         }
     }

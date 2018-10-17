@@ -58,12 +58,12 @@ class TellCommand extends CoreCommand{
         if(isset($args[0])){
             $player = $this->getServer()->getPlayer($args[0]);
             if($player === null){
-                $sender->sendMessage(Prefix::PLAYER_NOT_ONLINE);
+                $sender->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::PLAYER_NOT_ONLINE));
             }else{
                 if($sender instanceof PlayerClass and $player instanceof PlayerClass){
                     $message = implode(" ", $args[1]);
-                    $player->sendMessage(Prefix::DEFAULT.$sender->getRealName()."->You ".$message);
-                    $sender->sendMessage(Prefix::DEFAULT."You messaged ".$player->getRealName().": ".$message);
+                    $player->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT).$sender->getRealName()."->You ".$message);
+                    $sender->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."You messaged ".$player->getRealName().": ".$message);
                     $privateMessage = date("D, F d, Y, H:i T")." ".$sender->getRealName()."->".$player->getRealName().": ".$message;
                     $this->getPlugin()->privateMessages->set($privateMessage);
                     $this->getPlugin()->privateMessages->save();

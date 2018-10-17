@@ -1,5 +1,13 @@
 ---
-use_sql: true
+DEFAULT: 'Core> '
+DEFAULT_BAD: '§cCore> '
+LOGIN: Core> Please type your password to login!
+REGISTER: Core> Please type your password in the chat to register!
+LOGGED_IN: Core> You are now logged in! Have fun!
+PLAYER_NOT_ONLINE: Core> That player is not online!
+PASSWORD_INCORRECT: Core> Password is incorrect! Try again!
+PASSWORD_IN_CHAT: Core> Please don't type your password in chat!
+use_sql: false
 server-name: server-name
 username: username
 db_name: database-name

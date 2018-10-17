@@ -135,7 +135,7 @@ class BUHCManager extends GameManager{
     public function addPlayer(PlayerClass $player){
         $this->players[$player->getRealName()] = $player->getRealName();
         $player->setInMatch($this);
-        $player->sendMessage(Prefix::DEFAULT."You joined match ".$this->getName()."!");
+        $player->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."You joined match ".$this->getName()."!");
     }
 
     /**
@@ -147,7 +147,7 @@ class BUHCManager extends GameManager{
         $player->setQueued(false, false, null);
         $player->removeFromMatch();
         if($player->isOnline()){
-            $player->sendMessage(Prefix::DEFAULT."You left match ".$this->getName()."!");
+            $player->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."You left match ".$this->getName()."!");
             Utils::sendLobbyItems($player);
         }
     }
@@ -200,7 +200,7 @@ class BUHCManager extends GameManager{
             $player->getInventory()->sendContents($player);
             $player->getInventory()->addItem(Item::get(ItemIds::GOLDEN_APPLE, 0, 32));
             $player->getInventory()->sendContents($player);
-            $player->sendMessage(Prefix::DEFAULT."Match has started!");
+            $player->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."Match has started!");
         }
     }
 

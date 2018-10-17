@@ -56,6 +56,6 @@ class StatsCommand extends CoreCommand {
      * @return void
      */
     public function execute(CommandSender $sender, string $commandLabel, array $args){
-        $sender->sendMessage(Prefix::DEFAULT."In progress...");
+        $sender->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."In progress...");
     }
 }

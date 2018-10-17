@@ -13,13 +13,10 @@ use Core\managers\BUHCManager;
 use Core\managers\GameManager;
 use Core\managers\IronSoupManager;
 use Core\managers\KohiManager;
-use Core\npc\HumanNPC;
 use Core\player\PlayerClass;
-use Core\tasks\FloatingTextTask;
 use Core\tasks\ParticlesTask;
 use Core\tasks\QueueTask;
 use Core\tasks\ServerRestartTask;
-use Core\tasks\MySQLProviderTask;
 use Core\utils\Permissions;
 use Core\utils\Prefix;
 use Core\utils\Utils;
@@ -57,38 +54,36 @@ class Main extends PluginBase implements Listener{
     public $tempPass = [];
     public $isSetting = [];
     public $npcDelete = [];
-    public $test_version = "";
 
     public $sql;
 
     public function onLoad(){
+        $this->utils = new Utils($this);
         self::$obj = $this;
         date_default_timezone_set('EST');
         @mkdir($this->getDataFolder());
         @mkdir($this->getDataFolder()."World_Backups");
-        $this->getLogger()->info(Prefix::DEFAULT."Loading...");
+        $this->getLogger()->info("Loading...");
     }
 
     public function onEnable(){
-        $this->settings = new Config($this->getDataFolder()."settings.yml", Config::YAML, ["Prefix" => "Core","use_sql" => false, "server-name" => "server-name", "username" => "username", "db_name" => "database-name","password" => "password", "port" => 3306]);
+        $this->settings = new Config($this->getDataFolder()."settings.yml", Config::YAML, ["DEFAULT" => "Core> ", "DEFAULT_BAD" => "§cCore> ", "LOGIN" => "Core> Please type your password to login!", "REGISTER" => "Core> Please type your password in the chat to register!", "LOGGED_IN" => "Core> You are now logged in! Have fun!", "PLAYER_NOT_ONLINE" => "Core> That player is not online!", "PASSWORD_INCORRECT" => "Core> Password is incorrect! Try again!", "PASSWORD_IN_CHAT" => "Core> Please don't type your password in chat!", "use_sql" => false, "server-name" => "server-name", "username" => "username", "db_name" => "database-name","password" => "password", "port" => 3306]);
         $this->database = new Config($this->getDataFolder()."database.yml", Config::YAML, []);
         $this->matchesConfig = new Config($this->getDataFolder()."matches.yml", Config::YAML, ["Kohi1v1-matches" => [],"IronSoup1v1-matches" => [], "BUHC1v1-matches" => [], "Gapple1v1-matches" => []]);
         $this->privateMessages = new Config($this->getDataFolder()."private-messages.txt", Config::ENUM, []);
         $this->getServer()->getPluginManager()->registerEvents(new EventsListener($this), $this);
         date_default_timezone_set('EST');
-        $this->getLogger()->info(Prefix::DEFAULT."Date: ".date("D, F d, Y, H:i T"));
+        $this->getLogger()->info($this->getUtils()->getChatMessages(Prefix::DEFAULT)."Date: ".date("D, F d, Y, H:i T"));
         CoreCommand::registerAll($this, $this->getServer()->getCommandMap());
         $this->registerMatches();
         $this->registerTasks();
-        $this->test_version = Utils::generateRandomString(20);
-        $this->getLogger()->info(Prefix::DEFAULT."Enabled! Test version: ".$this->test_version);
+        $this->getLogger()->info($this->getUtils()->getChatMessages(Prefix::DEFAULT)."Enabled!");
         if($this->settings->get("use_sql")){
             $this->sql = new MySQLProvider($this);
             $this->sql->process();
         }else{
-            $this->getLogger()->info(Prefix::DEFAULT_BAD."MySQLProvider not enabled! Using YAML");
+            $this->getLogger()->info($this->getUtils()->getChatMessages(Prefix::DEFAULT_BAD)."MySQLProvider not enabled! Using YAML");
         }
-        $this->utils = new Utils($this);
     }
 
 
@@ -118,7 +113,7 @@ class Main extends PluginBase implements Listener{
     /**
      * @return Utils
      */
-    public function getUtils() : Utils{
+    public function getUtils(){
         return $this->utils;
     }
 
@@ -131,20 +126,20 @@ class Main extends PluginBase implements Listener{
             foreach($this->matchesConfig->get("Kohi1v1-matches") as $match){
                 $this->kohiMatches[$match["Name"]] = new KohiManager($this, $match["Name"]);
             }
-            $this->getLogger()->info(Prefix::DEFAULT."Kohi1v1 loaded ".count($this->matchesConfig->get("Kohi1v1-matches"))." matches!");
+            $this->getLogger()->info($this->getUtils()->getChatMessages(Prefix::DEFAULT)."Kohi1v1 loaded ".count($this->matchesConfig->get("Kohi1v1-matches"))." matches!");
         }
 
         if($this->matchesConfig->exists("IronSoup1v1-matches")){
             foreach($this->matchesConfig->get("IronSoup1v1-matches") as $match){
                 $this->ironSoupMatches[$match["Name"]] = new IronSoupManager($this, $match["Name"]);
             }
-            $this->getLogger()->info(Prefix::DEFAULT."IronSoup1v1 loaded ".count($this->matchesConfig->get("IronSoup1v1-matches"))." matches!");
+            $this->getLogger()->info($this->getUtils()->getChatMessages(Prefix::DEFAULT)."IronSoup1v1 loaded ".count($this->matchesConfig->get("IronSoup1v1-matches"))." matches!");
         }
         if($this->matchesConfig->exists("BUHC1v1-matches")){
             foreach($this->matchesConfig->get("BUHC1v1-matches") as $match){
                 $this->buhcMatches[$match["Name"]] = new BUHCManager($this, $match["Name"]);
             }
-            $this->getLogger()->info(Prefix::DEFAULT."BUHC1v1 loaded ".count($this->matchesConfig->get("BUHC1v1-matches"))." matches!");
+            $this->getLogger()->info($this->getUtils()->getChatMessages(Prefix::DEFAULT)."BUHC1v1 loaded ".count($this->matchesConfig->get("BUHC1v1-matches"))." matches!");
         }
     }
 
@@ -225,7 +220,7 @@ class Main extends PluginBase implements Listener{
     public function findKohiMatch(PlayerClass $player){
         if($player->isQueued() && $player->isOnline()){
             if(count($this->kohiMatches) === 0){
-                $player->sendMessage(Prefix::DEFAULT_BAD."There are no games available right now for ".$player->gameType."!");
+                $player->sendMessage($this->getUtils()->getChatMessages(Prefix::DEFAULT_BAD)."There are no games available right now for ".$player->gameType."!");
                 $player->setQueued(false, false, null);
                 return;
             }
@@ -254,7 +249,7 @@ class Main extends PluginBase implements Listener{
     public function findIronSoupMatch(PlayerClass $player){
         if($player->isQueued() && $player->isOnline()){
             if(count($this->ironSoupMatches) === 0){
-                $player->sendMessage(Prefix::DEFAULT_BAD."There are no games available right now for ".$player->gameType."!");
+                $player->sendMessage($this->getUtils()->getChatMessages(Prefix::DEFAULT_BAD)."There are no games available right now for ".$player->gameType."!");
                 $player->setQueued(false, false, null);
                 return;
             }
@@ -283,7 +278,7 @@ class Main extends PluginBase implements Listener{
     public function findBUHCMatch(PlayerClass $player){
         if($player->isQueued() && $player->isOnline()){
             if(count($this->buhcMatches) === 0){
-                $player->sendMessage(Prefix::DEFAULT_BAD."There are no games available right now for ".$player->gameType."!");
+                $player->sendMessage($this->getUtils()->getChatMessages(Prefix::DEFAULT_BAD)."There are no games available right now for ".$player->gameType."!");
                 $player->setQueued(false, false, null);
                 return;
             }

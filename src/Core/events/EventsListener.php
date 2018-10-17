@@ -136,14 +136,14 @@ class EventsListener implements Listener{
                         "z" => $block->z,
                         "level" => $player->getLevel()->getName()];
                     $this->getPlugin()->isSetting[$username]["int"]++;
-                    $player->sendMessage(Prefix::DEFAULT."Position one set please select the next!");
+                    $player->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."Position one set please select the next!");
                     break;
                 case 1:
                     $this->pos2 = ["x" => $block->x,
                         "y" => $block->y,
                         "z" => $block->z,
                         "level" => $player->getLevel()->getName()];
-                    $player->sendMessage(Prefix::DEFAULT."Done! All positions set!");
+                    $player->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."Done! All positions set!");
                     $this->getPlugin()->newMatch($this->pos1, $this->pos2, $this->getPlugin()->isSetting[$username]["type"]);
                     unset($this->getPlugin()->isSetting[$username]);
                     break;
@@ -182,13 +182,12 @@ class EventsListener implements Listener{
     public function onJoin(PlayerJoinEvent $ev){
         $player = $ev->getPlayer();
         $ev->setJoinMessage(null);
-        $player->sendMessage(Prefix::DEFAULT . "SERVER IS UNDER WORK");
         if($player instanceof PlayerClass){
             Utils::sendLobbyItems($player);
             if($player->isRegistered()){
-                $player->sendMessage(Prefix::LOGIN);
+                $player->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::LOGIN));
             }else{
-                $player->sendMessage(Prefix::REGISTER);
+                $player->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::REGISTER));
             }
         }else{
             $player->close("", TextFormat::RED . "Kicked due to " . $player->getName() . " not being a PlayerClass interface!\nPlease try again!");
@@ -200,40 +199,15 @@ class EventsListener implements Listener{
      */
     public function onEntityDamage(EntityDamageEvent $event){
         $entity = $event->getEntity();
-        /*if($event instanceof EntityDamageByEntityEvent){
-            $damager = $event->getDamager();
-            if($damager instanceof Player){
-                if ($entity instanceof HumanNPC && !isset($this->getPlugin()->npcDelete[$damager->getName()])){
-                    if($entity->getNameTag() === "Kohi1v1"){
-                        $this->getPlugin()->getServer()->dispatchCommand($damager, "kohi join");
-                    }
-                    if($entity->getNameTag() === "IronSoup1v1"){
-                        $this->getPlugin()->getServer()->dispatchCommand($damager, "ironsoup join");
-                    }
-                    if($entity->getNameTag() === "BUHC1v1"){
-                    $this->getPlugin()->getServer()->dispatchCommand($damager, "buhc join");
-                    }
-                    $event->setCancelled(true);
-                    return;
-                }
-                if(isset($this->getPlugin()->npcDelete[$damager->getName()]) && $entity instanceof HumanNPC){
-                    $entity->kill();
-                    $entity->despawnFromAll();
-                    $damager->sendMessage(Prefix::DEFAULT."Entity deleted!");
-                    unset($this->getPlugin()->npcDelete[$damager->getName()]);
-                    return;
-                }
-            }
-        }*/
         if($event instanceof EntityDamageByEntityEvent){
             $damager = $event->getDamager();
             if($damager instanceof PlayerClass){
                 if($entity->getHealth() - $event->getFinalDamage() <= 0){
                     $event->setCancelled(true);
                     $damager->getMatch()->win();
-                    $damager->sendMessage(Prefix::DEFAULT."You won!");
+                    $damager->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."You won!");
                     if($entity instanceof PlayerClass){
-                        $entity->sendMessage(Prefix::DEFAULT_BAD."You lost!");
+                        $entity->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT_BAD)."You lost!");
                         //TODO: stats update!
                     }
                 }
@@ -258,7 +232,7 @@ class EventsListener implements Listener{
                     foreach($player->getMatch()->getPlayers() as $name){
                         $player = $this->getServer()->getPlayer($name);
                         if($player instanceof PlayerClass){
-                            $player->sendMessage(Prefix::DEFAULT."Match ended due to other player leaving!");
+                            $player->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."Match ended due to other player leaving!");
                             $player->getMatch()->end();
                             if($player->getMatch() !== null){
                                 $player->getMatch()->removePlayer($player);
@@ -276,20 +250,15 @@ class EventsListener implements Listener{
     public function onCommandPreProcess(PlayerCommandPreprocessEvent $ev){
         $player = $ev->getPlayer();
         if($player instanceof PlayerClass){
-           /* if($player->isLoggedIn() === false){
-                $player->sendMessage(Prefix::DEFAULT_BAD."Please log in to run commands!");
-                $ev->setCancelled(true);
-                return;
-            } */
             if($player->isQueued() && $player->inGame === true){
                 if(strpos($ev->getMessage(), "/quit", 0) !== true){
-                    $player->sendMessage(Prefix::DEFAULT."Please use /quit to quit matches!");
+                    $player->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."Please use /quit to quit matches!");
                     $ev->setCancelled(true);
                 }
             }
             if($player->isLoggedIn() === false){
                 if(strpos($ev->getMessage(), "/", 0) !== false){
-                    $player->sendMessage(Prefix::DEFAULT."Please login to use commands!");
+                    $player->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."Please login to use commands!");
                     $ev->setCancelled(true);
                 }
             }
@@ -321,7 +290,7 @@ class EventsListener implements Listener{
             $database = $this->getPlugin()->database->getAll();
             if($player->isRegistered() && $player->isLoggedIn()){
                 if($this->getPlugin()->hash($player->getName(), $message) === $player->getPassword()){
-                    $player->sendMessage(Prefix::PASSWORD_IN_CHAT);//password in chat
+                    $player->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::PASSWORD_IN_CHAT));//password in chat
                     $ev->setCancelled();
                 }
             }
@@ -330,11 +299,11 @@ class EventsListener implements Listener{
                     $player->login();
                     $ev->setCancelled();
                 }else{
-                    $player->sendMessage(Prefix::PASSWORD_INCORRECT);
+                    $player->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::PASSWORD_INCORRECT));
                     if(!isset($player->loginTrys[$player->getName()])) $player->loginTrys[$player->getName()] = 0;
                     $player->loginTrys[$player->getName()]++;
                     if($player->loginTrys[$player->getName()] === 5){
-                        $player->close(" ",Prefix::DEFAULT."You have been kicked for reaching the max login attempt!");
+                        $player->close(" ",$this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."You have been kicked for reaching the max login attempt!");
                     }
                     $ev->setCancelled();
                 }
@@ -369,11 +338,11 @@ class EventsListener implements Listener{
                 }
                 if(!isset($this->getPlugin()->tempPass[$player->getName()]) && !$player->isRegistered() && !$player->isLoggedIn()){
                     $this->getPlugin()->tempPass[$player->getName()] = $message;
-                    $player->sendMessage(Prefix::DEFAULT."Please type your password one more time");
+                    $player->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."Please type your password one more time");
                     $ev->setCancelled();
                 }
                 if(isset($this->getPlugin()->tempPass[$player->getName()]) && $message !== $this->getPlugin()->tempPass[$player->getName()] && !$player->isRegistered() && $player->isLoggedIn()){
-                    $player->sendMessage(Prefix::DEFAULT."Passwords didn't match try again!");
+                    $player->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."Passwords didn't match try again!");
                     $ev->setCancelled();
                 }
             }

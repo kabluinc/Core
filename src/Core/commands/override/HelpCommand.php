@@ -54,6 +54,6 @@ class HelpCommand extends CoreCommand{
      * @return bool
      */
     public function execute(CommandSender $sender, string $commandLabel, array $args){
-        $sender->sendMessage(Prefix::DEFAULT."No help pages currently!");
+        $sender->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."No help pages currently!");
     }
 }

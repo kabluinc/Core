@@ -63,7 +63,7 @@ class ServerRestartTask extends Task{
         }
 
         if($this->getTime() === 60){
-            $this->getServer()->broadcastMessage(Prefix::DEFAULT."Server restarting in 1 minute!");
+            $this->getServer()->broadcastMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."Server restarting in 1 minute!");
         }
 
         if($this->getTime() === 0){

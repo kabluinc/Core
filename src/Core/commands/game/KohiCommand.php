@@ -55,27 +55,27 @@ class KohiCommand extends CoreCommand{
      */
     public function execute(CommandSender $sender, string $commandLabel, array $args){
         if(!$sender instanceof PlayerClass){
-            $sender->sendMessage(Prefix::DEFAULT."Please join server to run commands!");
+            $sender->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."Please join server to run commands!");
             return;
         }
         if(isset($args[0]) && $args[0] === "join"){
             if($sender instanceof PlayerClass && $sender->isQueued() && $sender->gameType !== null){
-                $sender->sendMessage(Prefix::DEFAULT."You are already queueing for ".$sender->gameType);
+                $sender->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."You are already queueing for ".$sender->gameType);
                 return;
             }
             if($sender instanceof PlayerClass){
-                $sender->sendMessage(Prefix::DEFAULT."You are queued and looking for a match....");
+                $sender->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."You are queued and looking for a match....");
                 $sender->setQueued(true, false, "Kohi1v1");
                 $this->getPlugin()->findKohiMatch($sender);
             }else{
-                $sender->sendMessage(Prefix::DEFAULT."Your player data isn't compatible with the server please rejoin!");
+                $sender->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."Your player data isn't compatible with the server please rejoin!");
             }
         }
         if($args[0] === "set"){
             $this->getPlugin()->isSetting[$sender->getName()] = [];
             $this->getPlugin()->isSetting[$sender->getName()]["type"] = "Kohi1v1";
             $this->getPlugin()->isSetting[$sender->getName()]["int"] = 0;
-            $sender->sendMessage(Prefix::DEFAULT."Please tap the first position for Kohi!");
+            $sender->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."Please tap the first position for Kohi!");
         }
     }
 }

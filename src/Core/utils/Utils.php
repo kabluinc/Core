@@ -19,7 +19,7 @@ use pocketmine\utils\TextFormat as TF;
 
 class Utils{
 
-    private $plugin, $db;
+    private $plugin;
 
     public function __construct(Main $plugin){
         $this->plugin = $plugin;
@@ -135,5 +135,10 @@ class Utils{
         $inventory->setItem(3, ItemFactory::get(Item::IRON_SWORD)->setCustomName(TF::AQUA.TF::BOLD."Gapple1v1\n\n".TF::AQUA.TF::BOLD."~Tap sword on ground to join a match!~"), true);
         $inventory->setItem(4, ItemFactory::get(Item::DIAMOND_SWORD)->setCustomName(TF::AQUA.TF::BOLD."SOON....."), true);
         $inventory->sendContents($player);
+    }
+
+    public function getChatMessages($key){
+        $message = $this->getPlugin()->settings->get($key);
+        return $message;
     }
 }

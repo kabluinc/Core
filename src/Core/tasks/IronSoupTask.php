@@ -20,7 +20,7 @@ class IronSoupTask extends Task{
     public function __construct(Main $plugin, GameManager $match){
         $this->plugin = $plugin;
         $this->match = $match;
-        $this->plugin->getLogger()->critical(Prefix::DEFAULT."Task starting for ".$this->match->getGameType()." match #".$this->match->getName());
+        $this->plugin->getLogger()->critical($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."Task starting for ".$this->match->getGameType()." match #".$this->match->getName());
     }
 
     /**

@@ -36,7 +36,7 @@ class LobbyCommand extends CoreCommand{
     public function execute(CommandSender $sender, string $commandLabel, array $args){
         if($sender instanceof PlayerClass){
             if($sender->isQueued()){
-                $sender->sendMessage(Prefix::DEFAULT."You have left the game/stopped queueing!");
+                $sender->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."You have left the game/stopped queueing!");
                 if($sender->getMatch() !== null){
                     $sender->removeFromMatch();
                 }

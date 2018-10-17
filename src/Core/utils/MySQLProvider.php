@@ -53,7 +53,7 @@ class MySQLProvider{
 										VALUES ('$name', '$password', '$rank', '$lang', '$uuid')"
                 );
                 if($this->result === false){
-                    $this->getPlugin()->getLogger()->info(Prefix::DEFAULT_BAD."Files weren't uploaded to SQL server!");
+                    $this->getPlugin()->getLogger()->info($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT_BAD)."Files weren't uploaded to SQL server!");
                     break;
                 }
                 $database[$keys[$i]]["uploaded_to_sql"] = true;
@@ -61,12 +61,12 @@ class MySQLProvider{
                 $this->plugin->database->save();
                 $this->users++;
             }else{
-                $this->getPlugin()->getLogger()->info(Prefix::DEFAULT."Player ".$name." has already been uploaded to the SQL server");
+                $this->getPlugin()->getLogger()->info($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."Player ".$name." has already been uploaded to the SQL server");
             }
             $i++;
         }
         if($this->result){
-            $this->getPlugin()->getLogger()->info(Prefix::DEFAULT.(string) $this->users . " player files uploaded to SQL database.");
+            $this->getPlugin()->getLogger()->info($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT).(string) $this->users . " player files uploaded to SQL database.");
         }
     }
 

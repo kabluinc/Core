@@ -120,7 +120,7 @@ class IronSoupManager extends GameManager {
     public function addPlayer(PlayerClass $player){
         $this->players[$player->getRealName()] = $player->getRealName();
         $player->setInMatch($this);
-        $player->sendMessage(Prefix::DEFAULT."You joined match ".$this->getName()."!");
+        $player->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."You joined match ".$this->getName()."!");
     }
 
     /**
@@ -132,7 +132,7 @@ class IronSoupManager extends GameManager {
         $player->setQueued(false, false , null);
         $player->removeFromMatch();
         if($player->isOnline()){
-            $player->sendMessage(Prefix::DEFAULT."You left match ".$this->getName()."!");
+            $player->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."You left match ".$this->getName()."!");
             Utils::sendLobbyItems($player);
         }
     }
@@ -174,7 +174,7 @@ class IronSoupManager extends GameManager {
         foreach ($this->getPlayers() as $name) {
             $player = $this->getServer()->getPlayer($name);
             //give armor and etc!
-            $player->sendMessage(Prefix::DEFAULT."Match has started!");
+            $player->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."Match has started!");
         }
     }
 

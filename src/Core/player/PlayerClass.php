@@ -188,7 +188,7 @@ class PlayerClass extends Player
     public function login(){
         $this->getPlugin()->loggedIn[$this->getName()] = true;
         TextToHead::sendText($this);
-        $this->sendMessage(Prefix::LOGGED_IN);
+        $this->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::LOGGED_IN));
     }
 
 
@@ -262,7 +262,7 @@ class PlayerClass extends Player
         $database[$this->getName()]["lang"] = $lang;
         $this->getPlugin()->database->setAll($database);
         $this->getPlugin()->database->save();
-        $this->sendMessage(Prefix::DEFAULT."Set language to ".$lang);
+        $this->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."Set language to ".$lang);
     }
 
     /**
@@ -306,7 +306,7 @@ class PlayerClass extends Player
         }
 
         if(!$match->isJoinable()){
-            $this->sendMessage(Prefix::DEFAULT."Match #".$match->getName()." for ".$match->getGameType()." isn't joinable please try again later!");
+            $this->sendMessage($this->getPlugin()->getUtils()->getChatMessages(Prefix::DEFAULT)."Match #".$match->getName()." for ".$match->getGameType()." isn't joinable please try again later!");
             return false;
         }
 
