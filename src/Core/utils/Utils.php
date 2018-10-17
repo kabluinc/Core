@@ -19,6 +19,8 @@ use pocketmine\utils\TextFormat as TF;
 
 class Utils{
 
+    const MATCH_TYPES = ["Kohi1v1", "IronSoup1v1", "Gapple1v1", "BUHC1v1"];
+
     private $plugin;
 
     public function __construct(Main $plugin){

@@ -74,7 +74,8 @@ class CoreCommand extends Command{
             new PermissionCommand($main, "permission", "set/remove/set rank command!", null),
             new TestCommand($main,"test","Test command for testing purposes.",null),
             new GappleCommand($main, "gapple", "Command to set/edit/join gapple matches", null),
-            new BUHCCommand($main, "buhc", "Command to set/edit/join buhc matches", null)]);
+            new BUHCCommand($main, "buhc", "Command to set/edit/join buhc matches", null),
+            new CoreCommand($main, "remove", "Command to remove matches", null)]);
     }
 
     /**

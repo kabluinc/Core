@@ -29,5 +29,6 @@ class Permissions{
     const HELP_COMMAND = "core.permissions.commands.help";
     const ME_COMMAND = "core.permissions.commands.me";
     const TELL_COMMAND = "core.permissions.commands.tell";
+    const REMOVE_MATCH_COMMAND = "core.permissions.command.remove_match";
     const ALL_PERMS = "core.permissions.*";
 }
