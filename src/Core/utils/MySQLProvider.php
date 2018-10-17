@@ -11,6 +11,7 @@ namespace Core\utils;
 
 
 use Core\Main;
+use Core\player\PlayerClass;
 use pocketmine\utils\Config;
 
 class MySQLProvider{
@@ -69,8 +70,17 @@ class MySQLProvider{
         }
     }
 
-    public function getPasswordFromSql($playerName){
-        //TODO: sql management.
+    /**
+     * @param PlayerClass $player
+     * @param string $data
+     * $data is one of the MySQL database columns [name, password, rank, lang, uuid]
+     * @return mixed
+     */
+    public function getDataFromSQL($name, string $data){
+        //$name = $player->getName();
+        $result = $this->db->query("SELECT * FROM registered_players where name='$name';");
+        $array = $result->fetch_assoc();
+        return $array[$data];
     }
 
 }

@@ -70,7 +70,7 @@ class Main extends PluginBase implements Listener{
     }
 
     public function onEnable(){
-        $this->settings = new Config($this->getDataFolder()."settings.yml", Config::YAML, ["use_sql" => "false","server-name" => "server-name", "username" => "username", "db_name" => "database-name","password" => "password", "port" => 3306]);
+        $this->settings = new Config($this->getDataFolder()."settings.yml", Config::YAML, ["Prefix" => "Core","use_sql" => false, "server-name" => "server-name", "username" => "username", "db_name" => "database-name","password" => "password", "port" => 3306]);
         $this->database = new Config($this->getDataFolder()."database.yml", Config::YAML, []);
         $this->matchesConfig = new Config($this->getDataFolder()."matches.yml", Config::YAML, ["Kohi1v1-matches" => [],"IronSoup1v1-matches" => [], "BUHC1v1-matches" => [], "Gapple1v1-matches" => []]);
         $this->privateMessages = new Config($this->getDataFolder()."private-messages.txt", Config::ENUM, []);
@@ -82,13 +82,15 @@ class Main extends PluginBase implements Listener{
         $this->registerTasks();
         $this->test_version = Utils::generateRandomString(20);
         $this->getLogger()->info(Prefix::DEFAULT."Enabled! Test version: ".$this->test_version);
-        $this->sql = $this->settings->get("use_sql");
-        if($this->sql){
-            $sql = new MySQLProvider($this);
-            $sql->process();
+        if($this->settings->get("use_sql")){
+            $this->sql = new MySQLProvider($this);
+            $this->sql->process();
+        }else{
+            $this->getLogger()->info(Prefix::DEFAULT_BAD."MySQLProvider not enabled! Using YAML");
         }
         $this->utils = new Utils($this);
     }
+
 
     //TODO: move some functions to utils class file ?
 
@@ -120,6 +122,10 @@ class Main extends PluginBase implements Listener{
         return $this->utils;
     }
 
+    public function getMySQL() : MySQLProvider{
+        return $this->sql;
+    }
+
     public function registerMatches(){
         if($this->matchesConfig->exists("Kohi1v1-matches")){
             foreach($this->matchesConfig->get("Kohi1v1-matches") as $match){
@@ -149,7 +155,6 @@ class Main extends PluginBase implements Listener{
         $this->getScheduler()->scheduleRepeatingTask(new ParticlesTask($this, new Vector3($x, $y+4.5, $z)), 20*4.5);
         $this->getScheduler()->scheduleRepeatingTask(new ServerRestartTask($this), 20*1);
         //$this->getScheduler()->scheduleRepeatingTask(new QueueTask($this), 20*1);
-        //$this->getScheduler()->scheduleRepeatingTask(new MySQLProviderTask($this), 20*1);
     }
 
 

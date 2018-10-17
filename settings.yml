@@ -1,8 +1,8 @@
 ---
+use_sql: true
 server-name: server-name
 username: username
 db_name: database-name
 password: password
 port: 3306
-use_sql: "false"
 ...
